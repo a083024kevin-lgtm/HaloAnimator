@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>My Favorite Things</title>
+    <meta name="description" content="A simple page about my favorite things: Null (Minecraft), Iron Man (movie), and Computers." />
+    <style>
+        :root{
+            --bg:#f6f8fb; --card:#fff; --muted:#6b7280; --accent:#ef4444; --glass: rgba(255,255,255,0.6);
+        }
+        html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#111;background:linear-gradient(180deg,#eef2ff 0%,var(--bg) 100%);}
+        .container{max-width:960px;margin:36px auto;padding:24px;}
+        header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+        .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#06b6d4);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;box-shadow:0 6px 18px rgba(99,102,241,0.18)}
+        h1{font-size:1.6rem;margin:0}
+        p.lead{margin:0;color:var(--muted)}
+        nav{margin-left:auto;display:flex;gap:8px}
+        nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px}
+        nav a:hover{background:var(--glass);color:#111}
+
+        .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:20px}
+        .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(15,23,42,0.06);display:flex;flex-direction:column;gap:12px}
+        .media{height:160px;border-radius:8px;background-size:cover;background-position:center;border:1px solid rgba(0,0,0,0.04)}
+        .poster{width:100%;border-radius:8px;max-height:320px;object-fit:cover;border:1px solid rgba(0,0,0,0.04);margin-top:10px}
+        .title-row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+        h2{font-size:1.1rem;margin:0}
+        .muted{color:var(--muted);font-size:0.95rem}
+        ul{margin:8px 0 0 18px;color:var(--muted)}
+        .btn-row{display:flex;gap:8px;margin-top:auto}
+        .btn{background:#111;color:white;padding:8px 12px;border-radius:8px;text-decoration:none;font-size:0.95rem}
+        .btn.secondary{background:transparent;color:#111;border:1px solid rgba(0,0,0,0.06)}
+        footer{margin-top:28px;color:var(--muted);font-size:0.9rem;text-align:center}
+
+        /* small interactive styles */
+        .tags{display:flex;gap:8px;flex-wrap:wrap}
+        .tag{background:#eef2ff;color:#3730a3;padding:6px 10px;border-radius:999px;font-size:0.85rem}
+
+        @media (prefers-color-scheme:dark){
+            :root{--bg:#0b1020;--card:#0f1724;--muted:#94a3b8;--accent:#fb923c;--glass: rgba(255,255,255,0.03);}
+            body{background:linear-gradient(180deg,#020617 0%,#071131 100%);color:#e6eef8}
+            .logo{box-shadow:none}
+            .btn.secondary{border-color:rgba(255,255,255,0.06)}
+        }
+          /* local image references for media elements (place your files under images/)
+              Example: images/null.jpeg, images/ironman.jpg, images/computer.jpg */
+          #null-media { background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/97b5d8a6-c3f0-4dd4-ad8c-1c0e830f0faa/dfna40d-59d3fbc9-6c2d-430d-b120-5d225a1d34b7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi85N2I1ZDhhNi1jM2YwLTRkZDQtYWQ4Yy0xYzBlODMwZjBmYWEvZGZuYTQwZC01OWQzZmJjOS02YzJkLTQzMGQtYjEyMC01ZDIyNWExZDM0YjcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.GDu0-L0VJiorRCNR563mPKgeL139znfaSv7ysDORB5k'); }
+          #iron-media { background-image: url('images/ironman.jpg'); }
+          #comp-media { background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIglGnD-sXd-rGTnqiwgPBzrmbCyG2WWM18w&s'); }
+    </style>
+</head>
+<body>
+    <main class="container" id="top">
+        <header>
+            <div class="logo" aria-hidden="true">FT</div>
+            <div>
+                <h1>My Favorite Things</h1>
+                <p class="lead">A short collection of things I like: Null (Minecraft), the Iron Man movie, and computers.</p>
+            </div>
+
+            <nav aria-label="Quick links">
+                <a href="#null">Null</a>
+                <a href="#ironman">Iron Man</a>
+                <a href="#computers">Computers</a>
+            </nav>
+        </header>
+
+        <section class="grid" aria-live="polite">
+            <!-- Null (Minecraft) -->
+            <article id="null" class="card" aria-labelledby="null-title">
+                <div id="null-media" class="media"></div>
+                <div class="title-row">
+                    <h2 id="null-title">Null — Minecraft character</h2>
+                    <div class="tags"><span class="tag">Minecraft</span><span class="tag">Character</span></div>
+                </div>
+                <p class="muted">Null is a popular Minecraft character/skin used in many community creations. I like the mysterious aesthetic and the stories people build around it.</p>
+                <ul>
+                    <li>What I like: eerie look, community lore, story potential</li>
+                    <li>Favorite use: cinematic videos</li>
+                </ul>
+                <div class="btn-row">
+                    <a class="btn" href="#null" onclick="alert('Replace with a link to your Null resources')">My Null stuff</a>
+                    <a class="btn secondary" href="https://minecraft.net" target="_blank" rel="noopener">Minecraft</a>
+                </div>
+            </article>
+
+            <!-- Iron Man -->
+            <article id="ironman" class="card" aria-labelledby="ironman-title">
+                <img class="poster" src="https://static.wikia.nocookie.net/marveldatabase/images/f/fe/Avengers_Endgame_poster_041_Variant_Textless.jpg/revision/latest/scale-to-width-down/1000?cb=20190629185509" alt="Avengers: Endgame poster">
+                <div class="title-row">
+                    <h2 id="ironman-title">Iron Man — Movie</h2>
+                    <div class="tags"><span class="tag">Movie</span><span class="tag">Marvel</span></div>
+                </div>
+                <p class="muted">Iron Man is a movie that defined a new era for superhero films for me — charismatic lead, tech focus, and a great soundtrack.</p>
+                <ul>
+                    <li>Why I like it: the character arc of Tony Stark</li>
+                    <li>Top moment: first test flight & suit reveal</li>
+                </ul>
+                <div class="btn-row">
+                    <a class="btn" href="#" onclick="openTrailer()">Watch trailer</a>
+                    <a class="btn secondary" href="https://www.imdb.com/title/tt0371746/" target="_blank" rel="noopener">IMDB</a>
+                </div>
+            </article>
+
+            <!-- Computers -->
+            <article id="computers" class="card" aria-labelledby="computers-title">
+                <div id="comp-media" class="media"></div>
+                <div class="title-row">
+                    <h2 id="computers-title">Computers</h2>
+                    <div class="tags"><span class="tag">Tech</span><span class="tag">Hobby</span></div>
+                </div>
+                <p class="muted">I enjoy computers for building, tinkering, and learning: hardware, software, and everything in between.</p>
+                <ul>
+                    <li>Interests: building PCs, programming, retro hardware</li>
+                    <li>Projects: home lab, custom builds, automation scripts</li>
+                </ul>
+                <div class="btn-row">
+                    <a class="btn" href="#" onclick="alert('List your PC builds or projects here')">My projects</a>
+                    <a class="btn secondary" href="https://en.wikipedia.org/wiki/Computer" target="_blank" rel="noopener">About computers</a>
+                </div>
+            </article>
+        </section>
+
+        <footer>
+            <p>Made with curiosity. Edit this file to add images, links, or more favorites.</p>
+            <p><a href="#top">Back to top</a></p>
+        </footer>
+
+        <!-- Admin Messages Display -->
+        <section style="background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(6,182,212,0.1)); padding: 3rem 1rem; margin-top: 3rem;">
+          <h2 style="text-align: center; color: #6366f1; margin-bottom: 2rem;">📢 Important Updates</h2>
+          <div id="viewer-messages" style="max-width: 800px; margin: 0 auto; display: grid; gap: 1rem;">
+            <p style="color: #6b7280; font-style: italic; text-align: center;">No updates at the moment.</p>
+          </div>
+        </section>
+    </main>
+
+    <script>
+        // Display admin messages on the viewer page
+        function loadViewerMessages() {
+          var messages = JSON.parse(localStorage.getItem('admin-messages') || '[]');
+          var viewerMessages = document.getElementById('viewer-messages');
+
+          if(messages.length === 0) {
+            viewerMessages.innerHTML = '<p style="color: #6b7280; font-style: italic; text-align: center;">No updates at the moment.</p>';
+            return;
+          }
+
+          // Sort by newest first
+          messages.reverse();
+
+          viewerMessages.innerHTML = messages.map(function(msg) {
+            return '<div style="background: rgba(99,102,241,0.08); padding: 1.5rem; border-radius: 8px; border-left: 3px solid #6366f1;">' +
+                   '<h3 style="margin: 0 0 0.5rem 0; color: #6366f1;">' + escapeHtml(msg.title) + '</h3>' +
+                   '<p style="margin: 0.5rem 0; color: #6b7280; font-size: 0.85rem;">' + msg.timestamp + '</p>' +
+                   '<p style="margin: 0.75rem 0 0 0; color: #111; line-height: 1.6;">' + escapeHtml(msg.content) + '</p>' +
+                   '</div>';
+          }).join('');
+        }
+
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+          var div = document.createElement('div');
+          div.textContent = text;
+          return div.innerHTML;
+        }
+
+        // Load messages on page load
+        loadViewerMessages();
+
+        // Refresh messages every 5 seconds
+        setInterval(loadViewerMessages, 5000);
+    </script>
+
+    <script>
+        // small helpers: replace placeholders or show demo behavior
+        function openTrailer(){
+            // open official trailer search to avoid embedding copyrighted content directly
+            const q = encodeURIComponent('Iron Man trailer official');
+            window.open('https://www.youtube.com/results?search_query=' + q, '_blank', 'noopener');
+        }
+
+        // keyboard shortcut: press "t" to toggle top focus (useful when editing)
+        document.addEventListener('keydown', e => {
+            if(e.key === 't') document.getElementById('top').scrollIntoView({behavior:'smooth'});
+        });
+    </script>
+</body>
+</html>

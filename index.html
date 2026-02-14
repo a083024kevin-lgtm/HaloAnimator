@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HaloAnimator | YouTuber & Streamer</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <header>
+    <div class="left-group">
+      <a href="admin_login.html" class="admin-link">Admin</a>
+      <div class="logo">HaloAnimator</div>
+    </div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#youtube">YouTube</a>
+      <a href="#twitch">Twitch</a>
+      <a href="#about">About</a>
+      <a href="stats.html">Stats</a>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <h1>Welcome to HaloAnimator</h1>
+    <p>YouTuber • Streamer • Minecraft Animator</p>
+    <div class="buttons">
+      <a href="https://www.youtube.com/@HalloAnimator" target="_blank" class="btn btn-primary">🎥 Watch on YouTube</a>
+      <a href="https://www.twitch.tv/haloanimatoryt" target="_blank" class="btn btn-secondary">🎮 Watch on Twitch</a>
+    </div>
+  </section>
+
+  <section id="youtube">
+    <h2>Latest YouTube Videos</h2>
+    <p>Check out my latest uploads below!</p>
+    <iframe src="https://www.youtube.com/embed?listType=user_uploads&list=HalloAnimator"></iframe>
+  </section>
+
+  <section id="twitch">
+    <h2>Live on Twitch</h2>
+    <p>If Im streaming, you can watch me live right here!</p>
+    <iframe src="https://player.twitch.tv/?channel=haloanimatoryt&parent=example.com" allowfullscreen></iframe>
+  </section>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Hey! Im <strong>HaloAnimator</strong> — a Minecraft content creator who loves making animations, livestreams, and epic builds.  
+      I upload regularly on YouTube and stream creative sessions on Twitch. Join me as I explore, create, and have fun with the HaloAnimator community!</p>
+  </section>
+
+  <!-- Admin Messages Display -->
+  <section id="admin-messages" style="background: linear-gradient(135deg, rgba(0,173,239,0.1), rgba(124,58,237,0.1)); padding: 3rem 1rem;">
+    <h2>📢 Important Updates</h2>
+    <div id="viewer-messages" style="max-width: 800px; margin: 2rem auto; display: grid; gap: 1rem;">
+      <p style="color: var(--muted); font-style: italic;">No updates at the moment.</p>
+    </div>
+  </section>
+
+  <section id="sponsors">
+    <h2>Sponsor Inquiries</h2>
+    <p>Interested in partnering with me? Get in touch!</p>
+    <form style="max-width: 500px; margin: 2rem auto; text-align: left;" action="mailto:a083024@kitszh.ch" method="POST" enctype="text/plain">
+      <div style="margin-bottom: 1.5rem;">
+        <label for="name" style="display: block; margin-bottom: 0.5rem; color: var(--text);">Name</label>
+        <input type="text" id="name" name="name" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary); border-radius: 8px; background: var(--surface); color: var(--text);">
+      </div>
+      <div style="margin-bottom: 1.5rem;">
+        <label for="email" style="display: block; margin-bottom: 0.5rem; color: var(--text);">Email</label>
+        <input type="email" id="email" name="email" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary); border-radius: 8px; background: var(--surface); color: var(--text);">
+      </div>
+      <div style="margin-bottom: 1.5rem;">
+        <label for="company" style="display: block; margin-bottom: 0.5rem; color: var(--text);">Company/Brand</label>
+        <input type="text" id="company" name="company" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary); border-radius: 8px; background: var(--surface); color: var(--text);">
+      </div>
+      <div style="margin-bottom: 1.5rem;">
+        <label for="message" style="display: block; margin-bottom: 0.5rem; color: var(--text);">Message</label>
+        <textarea id="message" name="message" rows="5" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary); border-radius: 8px; background: var(--surface); color: var(--text); font-family: 'Inter', sans-serif;"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Send Inquiry</button>
+    </form>
+  </section>
+  <section id="favorites" style="margin-top: 43px;">
+    <h2>My Favorites</h2>
+    <p>Check out my favorite games, creators, and tools!</p>
+    <a href="favorite.html" class="btn btn-primary">View Favorites</a>
+  </section>
+  <footer>
+    <p>© 2025 HaloAnimator • <a href="https://www.youtube.com/@HalloAnimator" target="_blank">YouTube</a> • <a href="https://www.twitch.tv/haloanimatoryt" target="_blank">Twitch</a></p>
+  </footer>
+
+  <script>
+    // Display admin messages on the viewer page
+    function loadViewerMessages() {
+      var messages = JSON.parse(localStorage.getItem('admin-messages') || '[]');
+      var viewerMessages = document.getElementById('viewer-messages');
+
+      if(messages.length === 0) {
+        viewerMessages.innerHTML = '<p style="color: var(--muted); font-style: italic;">No updates at the moment.</p>';
+        return;
+      }
+
+      // Sort by newest first
+      messages.reverse();
+
+      viewerMessages.innerHTML = messages.map(function(msg) {
+        return '<div style="background: rgba(0,173,239,0.08); padding: 1.5rem; border-radius: 8px; border-left: 3px solid var(--primary);">' +
+               '<h3 style="margin: 0 0 0.5rem 0; color: var(--primary);">' + escapeHtml(msg.title) + '</h3>' +
+               '<p style="margin: 0.5rem 0; color: var(--muted); font-size: 0.85rem;">' + msg.timestamp + '</p>' +
+               '<p style="margin: 0.75rem 0 0 0; color: var(--text); line-height: 1.6;">' + escapeHtml(msg.content) + '</p>' +
+               '</div>';
+      }).join('');
+    }
+
+    // Helper function to escape HTML
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Load messages on page load
+    loadViewerMessages();
+
+    // Refresh messages every 5 seconds
+    setInterval(loadViewerMessages, 5000);
+  </script>
+</body>
+</html>

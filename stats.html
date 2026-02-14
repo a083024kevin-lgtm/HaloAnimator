@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HaloAnimator | Channel Stats</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .stats-container {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    .stat-card {
+      background: linear-gradient(135deg, rgba(0,173,239,0.15), rgba(124,58,237,0.15));
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      border: 1px solid rgba(0,173,239,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,173,239,0.2);
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin: 1rem 0;
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .stat-platform {
+      color: var(--text);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="left-group">
+      <a href="admin_login.html" class="admin-link">Admin</a>
+      <div class="logo">HaloAnimator</div>
+    </div>
+    <nav>
+      <a href="index.html#home">Home</a>
+      <a href="index.html#youtube">YouTube</a>
+      <a href="index.html#twitch">Twitch</a>
+      <a href="index.html#about">About</a>
+      <a href="stats.html" style="color: var(--primary);">Stats</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Channel Statistics</h1>
+    <p>Real-time stats for HaloAnimator across platforms</p>
+  </section>
+
+  <div class="stats-container">
+    <!-- YouTube Subscriber Count -->
+    <div class="stat-card">
+      <div style="font-size: 2rem;">📺</div>
+      <div class="stat-label">YouTube Subscribers</div>
+      <div class="stat-number" id="yt-subs">-</div>
+      <div class="stat-platform">@HalloAnimator</div>
+      <a href="https://www.youtube.com/@HalloAnimator" target="_blank" class="btn btn-primary" style="margin-top: 2rem; display: inline-block;">Subscribe</a>
+    </div>
+
+    <!-- Twitch Followers -->
+    <div class="stat-card">
+      <div style="font-size: 2rem;">🎮</div>
+      <div class="stat-label">Twitch Followers</div>
+      <div class="stat-number" id="twitch-followers">-</div>
+      <div class="stat-platform">haloanimatoryt</div>
+      <a href="https://www.twitch.tv/haloanimatoryt" target="_blank" class="btn btn-secondary" style="margin-top: 2rem; display: inline-block;">Follow</a>
+    </div>
+
+    <!-- Total Views -->
+    <div class="stat-card">
+      <div style="font-size: 2rem;">👁️</div>
+      <div class="stat-label">Total Views</div>
+      <div class="stat-number" id="total-views">-</div>
+      <div class="stat-platform">All platforms</div>
+    </div>
+  </div>
+
+  <!-- Admin Messages Display -->
+  <section style="background: linear-gradient(135deg, rgba(0,173,239,0.1), rgba(124,58,237,0.1)); padding: 3rem 1rem; margin-top: 3rem;">
+    <h2 style="text-align: center; color: var(--primary); margin-bottom: 2rem;">📢 Important Updates</h2>
+    <div id="viewer-messages" style="max-width: 800px; margin: 0 auto; display: grid; gap: 1rem;">
+      <p style="color: var(--muted); font-style: italic; text-align: center;">No updates at the moment.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 HaloAnimator • <a href="https://www.youtube.com/@HalloAnimator" target="_blank">YouTube</a> • <a href="https://www.twitch.tv/haloanimatoryt" target="_blank">Twitch</a></p>
+  </footer>
+
+  <script>
+    // Fetch YouTube subscriber count (requires API key or alternative method)
+    // For demo purposes, you can manually update this or use a service
+    function loadStats() {
+      // These are placeholder values - update with actual API calls if needed
+      document.getElementById('yt-subs').textContent = 'Check channel →';
+      document.getElementById('twitch-followers').textContent = 'Check channel →';
+      document.getElementById('total-views').textContent = 'Check channels →';
+    }
+
+    // Display admin messages on the page
+    function loadViewerMessages() {
+      var messages = JSON.parse(localStorage.getItem('admin-messages') || '[]');
+      var viewerMessages = document.getElementById('viewer-messages');
+
+      if(messages.length === 0) {
+        viewerMessages.innerHTML = '<p style="color: var(--muted); font-style: italic; text-align: center;">No updates at the moment.</p>';
+        return;
+      }
+
+      // Sort by newest first
+      messages.reverse();
+
+      viewerMessages.innerHTML = messages.map(function(msg) {
+        return '<div style="background: rgba(0,173,239,0.08); padding: 1.5rem; border-radius: 8px; border-left: 3px solid var(--primary);">' +
+               '<h3 style="margin: 0 0 0.5rem 0; color: var(--primary);">' + escapeHtml(msg.title) + '</h3>' +
+               '<p style="margin: 0.5rem 0; color: var(--muted); font-size: 0.85rem;">' + msg.timestamp + '</p>' +
+               '<p style="margin: 0.75rem 0 0 0; color: var(--text); line-height: 1.6;">' + escapeHtml(msg.content) + '</p>' +
+               '</div>';
+      }).join('');
+    }
+
+    // Helper function to escape HTML
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Load on page load
+    loadStats();
+    loadViewerMessages();
+
+    // Refresh messages every 5 seconds
+    setInterval(loadViewerMessages, 5000);
+  </script>
+</body>
+</html>

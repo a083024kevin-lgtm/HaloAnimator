@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .login-container { max-width: 420px; margin: 6rem auto; padding: 2rem; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius: 12px; box-shadow: 0 6px 30px rgba(0,0,0,0.6); }
+    .login-container h1 { font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; }
+    
+    .panel-container { max-width: 900px; margin: 2rem auto; padding: 2rem; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius: 12px; box-shadow: 0 6px 30px rgba(0,0,0,0.6); }
+    .panel-container h1 { font-size: 1.8rem; color: var(--primary); margin-bottom: 2rem; text-align: center; }
+    .panel-container h2 { font-size: 1.2rem; color: var(--text); margin-bottom: 1.5rem; margin-top: 2rem; }
+    
+    .message-form-wrapper { background: rgba(0,173,239,0.05); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid rgba(0,173,239,0.1); }
+    
+    label { display:block; margin-top:0.75rem; color:var(--muted); font-size:0.9rem; }
+    input[type="text"], input[type="password"], textarea { width:100%; padding:0.75rem; margin-top:0.25rem; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:var(--text); font-family: inherit; }
+    input[type="text"]:focus, input[type="password"]:focus, textarea:focus { outline:none; border-color: var(--primary); box-shadow: 0 0 8px rgba(0,173,239,0.3); }
+    textarea { resize: vertical; }
+    
+    .form-row { margin-top:1rem; }
+    .form-actions { display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.5rem; }
+    .actions { display:flex; justify-content:space-between; align-items:center; margin-top:1.25rem; }
+    .small { font-size:0.9rem; color:var(--muted); }
+    
+    .btn { padding:0.6rem 1rem; border-radius:8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { box-shadow: 0 0 15px rgba(0,173,239,0.5); transform: translateY(-2px); }
+    .btn-secondary { background: var(--secondary); color: white; }
+    .btn-secondary:hover { box-shadow: 0 0 15px rgba(124,58,237,0.5); transform: translateY(-2px); }
+    .btn-tertiary { background: rgba(239,68,68,0.8); color: white; }
+    .btn-tertiary:hover { background: rgba(239,68,68,1); }
+    .btn-small { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+    .btn-delete { background: rgba(239,68,68,0.6); color: white; }
+    .btn-delete:hover { background: rgba(239,68,68,0.9); }
+    
+    .messages-list-wrapper { background: rgba(255,255,255,0.01); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); }
+    .messages-list { display: grid; gap: 1rem; }
+    .message-item { background: rgba(0,173,239,0.08); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--primary); }
+    .message-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+    .message-header h3 { margin: 0; color: var(--primary); font-size: 1rem; }
+    .message-time { font-size: 0.8rem; color: var(--muted); }
+    .message-body { margin: 0.75rem 0; color: var(--text); line-height: 1.5; }
+    .no-messages { color: var(--muted); font-style: italic; margin: 1rem 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- Login Form -->
+    <div class="login-container" id="login-section">
+      <h1>Admin Login</h1>
+      <form id="admin-login" action="#" method="post">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" required />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+
+        <div class="form-row">
+          <label><input id="show-pass" type="checkbox"> Show password</label>
+        </div>
+
+        <div class="actions">
+          <div class="small"><label><input type="checkbox" name="remember"> Remember me</label></div>
+          <button type="submit" class="btn btn-primary">Sign in</button>
+        </div>
+      </form>
+      <p class="small" style="margin-top:1rem;">This page is client-side only. Implement server-side auth for production.</p>
+    </div>
+
+    <!-- Admin Message Panel (hidden until login) -->
+    <div class="message-panel" id="message-section" style="display:none;">
+      <div class="panel-container">
+        <h1>Admin Message Center</h1>
+        <div class="message-form-wrapper">
+          <h2>Send Message to Viewers</h2>
+          <form id="message-form">
+            <label for="message-title">Message Title</label>
+            <input id="message-title" type="text" placeholder="e.g., Stream Schedule Update" required />
+
+            <label for="message-content">Message Content</label>
+            <textarea id="message-content" placeholder="Enter your message for viewers..." rows="5" required></textarea>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Send Message</button>
+              <button type="button" class="btn btn-secondary" id="clear-messages">Clear All Messages</button>
+              <button type="button" class="btn btn-tertiary" id="logout-btn">Logout</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="messages-list-wrapper">
+          <h2>Recent Messages</h2>
+          <div id="messages-list" class="messages-list">
+            <p class="no-messages">No messages sent yet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Public Messages Display -->
+    <section style="background: linear-gradient(135deg, rgba(0,173,239,0.1), rgba(124,58,237,0.1)); padding: 3rem 1rem; margin-top: 3rem;">
+      <div style="max-width: 800px; margin: 0 auto;">
+        <h2 style="text-align: center; color: var(--primary); margin-bottom: 2rem;">📢 Important Updates</h2>
+        <div id="public-messages" style="display: grid; gap: 1rem;">
+          <p style="color: var(--muted); font-style: italic; text-align: center;">No updates at the moment.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    // Show/hide password toggle
+    document.getElementById('show-pass').addEventListener('change', function(e){
+      document.getElementById('password').type = e.target.checked ? 'text' : 'password';
+    });
+
+    // Check if user is already logged in
+    function checkLoginStatus() {
+      if (localStorage.getItem('admin-authenticated')) {
+        showMessagePanel();
+      }
+    }
+
+    // Show message panel and hide login
+    function showMessagePanel() {
+      document.getElementById('login-section').style.display = 'none';
+      document.getElementById('message-section').style.display = 'block';
+      loadMessages();
+    }
+
+    // Hide message panel and show login
+    function showLoginPanel() {
+      document.getElementById('login-section').style.display = 'block';
+      document.getElementById('message-section').style.display = 'none';
+    }
+
+    // Handle login submission
+    document.getElementById('admin-login').addEventListener('submit', function(e){
+      e.preventDefault();
+      var u = document.getElementById('username').value.trim();
+      var p = document.getElementById('password').value;
+      if(!u || !p){ alert('Please enter username and password'); return; }
+      // Demo client-side check: username must be HaloAnimator
+      if (u === 'HaloAnimator' && p === 'Halo') {
+        localStorage.setItem('admin-authenticated', 'true');
+        showMessagePanel();
+      } else {
+        alert('Invalid username or password');
+      }
+    });
+
+    // Handle message submission
+    document.getElementById('message-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var title = document.getElementById('message-title').value.trim();
+      var content = document.getElementById('message-content').value.trim();
+      
+      if(!title || !content) {
+        alert('Please fill in both title and content');
+        return;
+      }
+
+      // Create message object
+      var message = {
+        id: Date.now(),
+        title: title,
+        content: content,
+        timestamp: new Date().toLocaleString()
+      };
+
+      // Get existing messages from localStorage
+      var messages = JSON.parse(localStorage.getItem('admin-messages') || '[]');
+      messages.push(message);
+      localStorage.setItem('admin-messages', JSON.stringify(messages));
+
+      // Clear form
+      document.getElementById('message-title').value = '';
+      document.getElementById('message-content').value = '';
+
+      // Reload messages display
+      loadMessages();
+      alert('Message sent to viewers!');
+    });
+
+    // Load and display all messages
+    function loadMessages() {
+      var messages = JSON.parse(localStorage.getItem('admin-messages') || '[]');
+      var messagesList = document.getElementById('messages-list');
+
+      if(messages.length === 0) {
+        messagesList.innerHTML = '<p class="no-messages">No messages sent yet.</p>';
+        return;
+      }
+
+      // Sort by newest first
+      messages.reverse();
+
+      messagesList.innerHTML = messages.map(function(msg) {
+        return '<div class="message-item">' +
+               '<div class="message-header">' +
+               '<h3>' + escapeHtml(msg.title) + '</h3>' +
+               '<span class="message-time">' + msg.timestamp + '</span>' +
+               '</div>' +
+               '<p class="message-body">' + escapeHtml(msg.content) + '</p>' +
+               '<button type="button" class="btn btn-small btn-delete" onclick="deleteMessage(' + msg.id + ')">Delete</button>' +
+               '</div>';
+      }).join('');
+    }
+
+    // Delete a specific message
+    function deleteMessage(id) {
+      if(confirm('Delete this message?')) {
+        var messages = JSON.parse(localStorage.getItem('admin-messages') || '[]');
+        messages = messages.filter(function(msg) { return msg.id !== id; });
+        localStorage.setItem('admin-messages', JSON.stringify(messages));
+        loadMessages();
+      }
+    }
+
+    // Clear all messages
+    document.getElementById('clear-messages').addEventListener('click', function(){
+      if(confirm('Delete all messages? This cannot be undone.')) {
+        localStorage.removeItem('admin-messages');
+        loadMessages();
+        alert('All messages cleared');
+      }
+    });
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', function(){
+      localStorage.removeItem('admin-authenticated');
+      document.getElementById('message-form').reset();
+      showLoginPanel();
+    });
+
+    // Helper function to escape HTML
+    function escapeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Initialize on page load
+    checkLoginStatus();
+
+    // Display admin messages on the page
+    function loadViewerMessages() {
+      var messages = JSON.parse(localStorage.getItem('admin-messages') || '[]');
+      var viewerMessages = document.getElementById('public-messages');
+      if(!viewerMessages) return;
+
+      if(messages.length === 0) {
+        viewerMessages.innerHTML = '<p style="color: var(--muted); font-style: italic;">No updates at the moment.</p>';
+        return;
+      }
+
+      // Sort by newest first
+      messages.reverse();
+
+      viewerMessages.innerHTML = messages.map(function(msg) {
+        return '<div style="background: rgba(0,173,239,0.08); padding: 1.5rem; border-radius: 8px; border-left: 3px solid var(--primary);">' +
+               '<h3 style="margin: 0 0 0.5rem 0; color: var(--primary);">' + escapeHtml(msg.title) + '</h3>' +
+               '<p style="margin: 0.5rem 0; color: var(--muted); font-size: 0.85rem;">' + msg.timestamp + '</p>' +
+               '<p style="margin: 0.75rem 0 0 0; color: var(--text); line-height: 1.6;">' + escapeHtml(msg.content) + '</p>' +
+               '</div>';
+      }).join('');
+    }
+
+    // Load messages on page load
+    loadViewerMessages();
+
+    // Refresh messages every 5 seconds
+    setInterval(loadViewerMessages, 5000);
+  </script>
+</body>
+</html>
